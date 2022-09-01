@@ -71,6 +71,20 @@
                         @decreaseInventory="decreaseInventory"
                 ></DecreaseInventoryCommand>
             </v-dialog>
+            <v-btn
+                    v-if="!editMode"
+                    color="deep-purple lighten-2"
+                    text
+                    @click="openAddStock"
+            >
+                AddStock
+            </v-btn>
+            <v-dialog v-model="addStockDiagram" width="500">
+                <AddStockCommand
+                        @closeDialog="closeAddStock"
+                        @addStock="addStock"
+                ></AddStockCommand>
+            </v-dialog>
         </v-card-actions>
 
         <v-snackbar
@@ -109,6 +123,7 @@
                 text: ''
             },
             decreaseInventoryDiagram: false,
+            addStockDiagram: false,
         }),
         created(){
         },
@@ -228,6 +243,32 @@
             },
             closeDecreaseInventory() {
                 this.decreaseInventoryDiagram = false;
+            },
+            async addStock(params) {
+                try {
+                    if(!this.offline) {
+                        var temp = await axios.put(axios.fixUrl(this.value._links['addstock'].href), params)
+                        for(var k in temp.data) {
+                            this.value[k]=temp.data[k];
+                        }
+                    }
+
+                    this.editMode = false;
+                    this.closeAddStock();
+                } catch(e) {
+                    this.snackbar.status = true
+                    if(e.response && e.response.data.message) {
+                        this.snackbar.text = e.response.data.message
+                    } else {
+                        this.snackbar.text = e
+                    }
+                }
+            },
+            openAddStock() {
+                this.addStockDiagram = true;
+            },
+            closeAddStock() {
+                this.addStockDiagram = false;
             },
         },
     }

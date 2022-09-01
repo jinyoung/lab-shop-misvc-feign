@@ -31,8 +31,9 @@ public class Inventory {
         DecreaseInventoryCommand decreaseInventoryCommand
     ) {
 
-
         setStock(getStock()  - decreaseInventoryCommand.getQty());
 
     }
+
+    public void addStock(AddStockCommand addStockCommand) {}
 }
