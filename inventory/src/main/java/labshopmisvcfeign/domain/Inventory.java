@@ -30,4 +30,6 @@ public class Inventory {
     public void decreaseInventory(
         DecreaseInventoryCommand decreaseInventoryCommand
     ) {}
+
+    public void addStock(AddStockCommand addStockCommand) {}
 }

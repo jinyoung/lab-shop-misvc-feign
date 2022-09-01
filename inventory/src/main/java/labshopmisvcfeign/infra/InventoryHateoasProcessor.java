@@ -20,6 +20,11 @@ public class InventoryHateoasProcessor
                 )
                 .withRel("decreaseinventory")
         );
+        model.add(
+            Link
+                .of(model.getRequiredLink("self").getHref() + "/addstock")
+                .withRel("addstock")
+        );
 
         return model;
     }
