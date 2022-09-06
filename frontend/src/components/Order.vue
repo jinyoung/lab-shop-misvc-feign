@@ -21,6 +21,7 @@
             <Number label="Qty" v-model="value.qty" :editMode="editMode"/>
             <String label="CustomerId" v-model="value.customerId" :editMode="editMode"/>
             <Number label="Amount" v-model="value.amount" :editMode="editMode"/>
+            <Payment offline label="Payment" v-model="value.payment" :editMode="editMode" @change="change"/>
         </v-card-text>
 
         <v-card-actions>
@@ -80,10 +81,12 @@
 <script>
     const axios = require('axios').default;
 
+    import Payment from './vo/Payment.vue';
 
     export default {
         name: 'Order',
         components:{
+            Payment,
         },
         props: {
             value: [Object, String, Number, Boolean, Array],

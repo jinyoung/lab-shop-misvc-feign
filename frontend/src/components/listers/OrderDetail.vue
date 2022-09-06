@@ -17,6 +17,7 @@
             <div>
                 <Number label="Amount" v-model="item.amount" :editMode="editMode" @change="change" />
             </div>
+            <Payment offline label="Payment" v-model="item.payment" :editMode="false" @change="change" />
         </v-card-text>
 
         <v-card-actions>

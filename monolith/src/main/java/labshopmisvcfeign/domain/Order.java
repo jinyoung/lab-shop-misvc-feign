@@ -24,6 +24,13 @@ public class Order {
 
     private Double amount;
 
+    @Embedded
+    @AttributeOverride(
+        name = "amount",
+        column = @Column(name = "paymentAmount", nullable = true)
+    )
+    private Payment payment;
+
     @PostPersist
     public void onPostPersist() {
         //Following code causes dependency to external APIs
