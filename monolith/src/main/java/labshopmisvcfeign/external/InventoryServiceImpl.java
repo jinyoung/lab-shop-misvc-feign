@@ -14,4 +14,10 @@ public class InventoryServiceImpl implements InventoryService {
     }
     // keep
 
+    @Override
+    public Inventory decreaseStock(Long id, DecreaseStockCommand decreaseStockCommand) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

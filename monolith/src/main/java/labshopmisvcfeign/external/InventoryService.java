@@ -7,14 +7,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@FeignClient(
-    name = "inventory",
-    url = "${api.url.inventory}",
-    fallback = InventoryServiceImpl.class
-)
+@FeignClient(name = "inventory", url = "${api.url.inventory}")
 public interface InventoryService {
-    @RequestMapping(method = RequestMethod.POST, path = "/inventories")
-    public void decreaseInventory(@RequestBody Inventory inventory);
+    @RequestMapping(method = RequestMethod.GET, path = "/inventories/{id}")
+    public Inventory getInventory(@PathVariable("id") Long id);
     // keep
+
+    @RequestMapping(method = RequestMethod.PUT, path = "/inventories/{id}/decrease-stock")
+    public Inventory decreaseStock(@PathVariable("id") Long id, @RequestBody DecreaseStockCommand decreaseStockCommand);
 
 }

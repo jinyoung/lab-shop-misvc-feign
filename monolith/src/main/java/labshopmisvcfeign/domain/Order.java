@@ -29,11 +29,12 @@ public class Order {
         //Following code causes dependency to external APIs
         // it is NOT A GOOD PRACTICE. instead, Event-Policy mapping is recommended.
 
-        labshopmisvcfeign.external.Inventory inventory = new labshopmisvcfeign.external.Inventory();
+        labshopmisvcfeign.external.DecreaseStockCommand decreaseStockCommand = new labshopmisvcfeign.external.DecreaseStockCommand();
+        decreaseStockCommand.setQty(getQty());
         // mappings goes here
         MonolithApplication.applicationContext
             .getBean(labshopmisvcfeign.external.InventoryService.class)
-            .decreaseInventory(inventory);
+            .decreaseStock(Long.valueOf(getProductId()), decreaseStockCommand);
 
         OrderPlaced orderPlaced = new OrderPlaced(this);
         orderPlaced.publishAfterCommit();
@@ -42,9 +43,12 @@ public class Order {
     @PrePersist
     public void onPrePersist() {
         // Get request from Inventory
-        //labshopmisvcfeign.external.Inventory inventory =
-        //    Application.applicationContext.getBean(labshopmisvcfeign.external.InventoryService.class)
-        //    .getInventory(/** mapping value needed */);
+        labshopmisvcfeign.external.Inventory inventory =
+           MonolithApplication.applicationContext.getBean(labshopmisvcfeign.external.InventoryService.class)
+           .getInventory(Long.valueOf(getProductId()));
+
+        if(inventory.getStock() < getQty()) throw new OutOfStockException();
+           
 
     }
 
